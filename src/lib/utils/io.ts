@@ -43,6 +43,10 @@ export const process_image = (data: Uint8ClampedArray, info: ImageInfo, config: 
 	}
 	colorize(data, info, CATPPUCCIN[palette]);
 	const imageData = new ImageData(data, info.width, info.height);
+	return imageData;
+};
+
+export const getResUrl = (imageData: ImageData) => {
 	const canvas = document.createElement('canvas');
 	const ctx = canvas.getContext('2d');
 	canvas.width = imageData.width;

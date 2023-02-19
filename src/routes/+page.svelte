@@ -1,11 +1,28 @@
 <script lang="ts">
+	import ProcWorker from './processing.worker?worker';
+
 	import IconMenu from '~icons/ri/menu-fill';
 	import IconDownload from '~icons/ri/download-fill';
 	import IconRefresh from '~icons/ri/refresh-line';
 	import Config from '$lib/UI/Config.svelte';
-	import { process_image, read_image } from '$lib/utils/io';
+	import { getResUrl, process_image, read_image } from '$lib/utils/io';
+	import { onMount } from 'svelte';
+
+	let procWorker: Worker;
+
+	onMount(() => {
+		procWorker = new ProcWorker();
+		procWorker.onmessage = (data) => {
+			const imageData = data.data;
+			const resUrl = getResUrl(imageData);
+			image.src = resUrl;
+			downloadUrl = resUrl;
+			loading = false;
+		};
+	});
 
 	let url = '';
+	let loading = false;
 	let downloadUrl = '';
 	let pixelSize = 1;
 	let to_dither = true;
@@ -17,16 +34,21 @@
 	let dropping = false;
 
 	const process = async () => {
+		loading = true;
 		let { data, info } = read_image(url);
-		const resUrl = process_image(data as Uint8ClampedArray, info, {
-			pixelSize,
-			to_dither,
-			bayer_level: bayerLevel,
-			noiseLevel,
-			palette
+		procWorker.postMessage({
+			data,
+			info,
+			config: {
+				pixelSize,
+				to_dither,
+				bayer_level: bayerLevel,
+				noiseLevel,
+				palette
+			}
 		});
-		image.src = resUrl;
-		downloadUrl = resUrl;
+		// image.src = resUrl;
+		// downloadUrl = resUrl;
 	};
 
 	const handleFile = (file: File) => {
@@ -97,7 +119,12 @@
 		<ul class="menu p-4 w-80 bg-base-100 text-base-content">
 			<Config bind:pixelSize bind:palette bind:bayerLevel bind:to_dither bind:noiseLevel />
 			{#if url}
-				<button class="btn btn-success" on:click={process}>Process</button>
+				<button
+					class="btn btn-success"
+					class:btn-disabled={loading}
+					class:loading
+					on:click={process}>Process</button
+				>
 			{/if}
 		</ul>
 	</div>
