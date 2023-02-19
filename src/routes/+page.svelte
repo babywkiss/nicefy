@@ -6,6 +6,7 @@
 	import IconRefresh from '~icons/ri/refresh-line';
 	import Config from '$lib/UI/Config.svelte';
 	import ColorBar from '$lib/UI/ColorBar.svelte';
+	import ImageSlider from '$lib/UI/ImageSlider.svelte';
 	import { getResUrl, read_image } from '$lib/utils/io';
 	import { onMount } from 'svelte';
 
@@ -93,10 +94,15 @@
 		{#if processedUrl}
 			<ColorBar class="fixed bottom-0" {palette} />
 		{/if}
-		<img
-			class:hidden={!originalUrl && !processedUrl}
-			alt="result"
-			src={processedUrl || originalUrl}
+		<!-- <img -->
+		<!-- class:hidden={!originalUrl && !processedUrl} -->
+		<!-- alt="result" -->
+		<!-- src={processedUrl || originalUrl} -->
+		<!-- /> -->
+		<ImageSlider
+			class={'w-full h-full' + (!originalUrl && !processedUrl ? ' hidden' : '')}
+			beforeUrl={originalUrl}
+			afterUrl={processedUrl}
 		/>
 		<div
 			class:hidden={originalUrl}
