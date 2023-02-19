@@ -13,6 +13,7 @@ export type Config = {
 	palette: keyof typeof CATPPUCCIN;
 	to_dither: boolean;
 	bayer_level: number;
+	noiseLevel: number;
 };
 
 export const read_image = (url: string) => {
@@ -30,12 +31,12 @@ export const read_image = (url: string) => {
 };
 
 export const process_image = (data: Uint8ClampedArray, info: ImageInfo, config: Config) => {
-	const { pixelSize, palette, to_dither, bayer_level } = config;
+	const { pixelSize, palette, to_dither, bayer_level, noiseLevel } = config;
 	if (pixelSize > 1) {
 		({ data, info } = pixelate(data, info, pixelSize));
 	}
 	if (to_dither) {
-		dither(data, info, bayerMatrix(bayer_level));
+		dither(data, info, bayerMatrix(bayer_level), noiseLevel);
 	}
 	if (pixelSize > 1) {
 		({ data, info } = pixelate(data, info, 1 / pixelSize));

@@ -4,6 +4,7 @@
 	export let to_dither: boolean;
 	export let bayerLevel: number;
 	export let palette: string;
+	export let noiseLevel: number;
 </script>
 
 <div class="flex flex-col w-72 p-5 bg-base-100 rounded-lg">
@@ -16,9 +17,12 @@
 		<input type="checkbox" class="checkbox" bind:checked={to_dither} />
 	</div>
 	{#if to_dither}
-		<span class="">Bayer level</span>
+		<span class="">Matrix Size</span>
 		<input type="range" class="range range-sm" min="0" max="10" bind:value={bayerLevel} />
 		<span class="font-bold">{bayerLevel}</span>
+		<span class="">Noise level</span>
+		<input type="range" class="range range-sm" min="2" max="256" bind:value={noiseLevel} />
+		<span class="font-bold">{noiseLevel}</span>
 	{/if}
 	<div class="divider" />
 	<div class="input-group">

@@ -31,12 +31,17 @@ export const pixelate = (data: Uint8ClampedArray, info: ImageMeta, pixelSize: nu
 	return { data: pixelated, info: new_info };
 };
 
-export const dither = (data: Uint8ClampedArray, info: ImageMeta, bayerMatrix: number[]) => {
+export const dither = (
+	data: Uint8ClampedArray,
+	info: ImageMeta,
+	bayerMatrix: number[],
+	noiseLevel: number
+) => {
 	const bayer_width = bayerMatrix.length ** 0.5;
 	const { width, height, channels } = info;
 	for (let y = 0; y < height; y++) {
 		for (let x = 0; x < width; x++) {
-			const noise = 256 * bayerMatrix[(y % bayer_width) * bayer_width + (x % bayer_width)];
+			const noise = noiseLevel * bayerMatrix[(y % bayer_width) * bayer_width + (x % bayer_width)];
 			for (let c = 0; c < channels; c++) {
 				const value = data[channels * (y * width + x) + c];
 				const new_val = value + noise;

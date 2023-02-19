@@ -9,7 +9,8 @@
 	let downloadUrl = '';
 	let pixelSize = 1;
 	let to_dither = true;
-	let bayerLevel = 7;
+	let bayerLevel = 3;
+	let noiseLevel = 32;
 	let palette: 'mocha' | 'frappe' | 'latte' | 'macchiato' = 'mocha';
 
 	let image: HTMLImageElement;
@@ -21,6 +22,7 @@
 			pixelSize,
 			to_dither,
 			bayer_level: bayerLevel,
+			noiseLevel,
 			palette
 		});
 		image.src = resUrl;
@@ -93,7 +95,7 @@
 	<div class="drawer-side">
 		<label for="my-drawer" class="drawer-overlay" />
 		<ul class="menu p-4 w-80 bg-base-100 text-base-content">
-			<Config bind:pixelSize bind:palette bind:bayerLevel bind:to_dither />
+			<Config bind:pixelSize bind:palette bind:bayerLevel bind:to_dither bind:noiseLevel />
 			{#if url}
 				<button class="btn btn-success" on:click={process}>Process</button>
 			{/if}
