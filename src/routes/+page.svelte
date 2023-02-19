@@ -5,7 +5,8 @@
 	import IconDownload from '~icons/ri/download-fill';
 	import IconRefresh from '~icons/ri/refresh-line';
 	import Config from '$lib/UI/Config.svelte';
-	import { getResUrl, process_image, read_image } from '$lib/utils/io';
+	import ColorBar from '$lib/UI/ColorBar.svelte';
+	import { getResUrl, read_image } from '$lib/utils/io';
 	import { onMount } from 'svelte';
 
 	let procWorker: Worker;
@@ -14,28 +15,25 @@
 		procWorker = new ProcWorker();
 		procWorker.onmessage = (data) => {
 			const imageData = data.data;
-			const resUrl = getResUrl(imageData);
-			image.src = resUrl;
-			downloadUrl = resUrl;
+			processedUrl = getResUrl(imageData);
 			loading = false;
 		};
 	});
 
-	let url = '';
-	let loading = false;
-	let downloadUrl = '';
+	let originalUrl = '';
+	let processedUrl = '';
 	let pixelSize = 1;
 	let to_dither = true;
 	let bayerLevel = 3;
 	let noiseLevel = 32;
 	let palette: 'mocha' | 'frappe' | 'latte' | 'macchiato' = 'mocha';
 
-	let image: HTMLImageElement;
 	let dropping = false;
+	let loading = false;
 
 	const process = async () => {
 		loading = true;
-		let { data, info } = read_image(url);
+		let { data, info } = read_image(originalUrl);
 		procWorker.postMessage({
 			data,
 			info,
@@ -47,8 +45,6 @@
 				palette
 			}
 		});
-		// image.src = resUrl;
-		// downloadUrl = resUrl;
 	};
 
 	const handleFile = (file: File) => {
@@ -56,8 +52,7 @@
 		reader.readAsDataURL(file);
 		reader.onloadend = () => {
 			if (!(typeof reader.result === 'string')) return;
-			url = reader.result;
-			image.src = url;
+			originalUrl = reader.result;
 		};
 	};
 
@@ -78,26 +73,33 @@
 <div class="drawer">
 	<input id="my-drawer" type="checkbox" class="drawer-toggle" />
 	<div class="drawer-content flex flex-col items-center">
-		<div class="navbar bg-base-100 sticky top-0">
+		<div class="navbar bg-base-100 sticky top-0 flex flex-col">
 			<div class="w-full flex flex-row gap-3 justify-between md:justify-start">
 				<label for="my-drawer" class="btn btn-square btn-ghost">
 					<IconMenu class="text-lg" />
 				</label>
-				{#if downloadUrl}
-					<a class="btn btn-info btn-square" href={downloadUrl} download="result.png">
+				{#if processedUrl}
+					<a class="btn btn-info btn-square" href={processedUrl} download="result.png">
 						<IconDownload />
 					</a>
 				{/if}
-				{#if url}
-					<button class="btn btn-warning" on:click={() => ((url = ''), (downloadUrl = ''))}
+				{#if originalUrl}
+					<button class="btn btn-warning" on:click={() => ((originalUrl = ''), (processedUrl = ''))}
 						><IconRefresh /></button
 					>
 				{/if}
 			</div>
 		</div>
-		<img class:hidden={!url} alt="result" bind:this={image} />
+		{#if processedUrl}
+			<ColorBar class="fixed bottom-0" {palette} />
+		{/if}
+		<img
+			class:hidden={!originalUrl && !processedUrl}
+			alt="result"
+			src={processedUrl || originalUrl}
+		/>
 		<div
-			class:hidden={url}
+			class:hidden={originalUrl}
 			class="border-4 w-96 h-96 flex flex-col text-xl items-center justify-center rounded-xl m-auto"
 			class:border-green-300={dropping}
 			on:dragenter|preventDefault={(_) => (dropping = true)}
@@ -118,7 +120,7 @@
 		<label for="my-drawer" class="drawer-overlay" />
 		<ul class="menu p-4 w-80 bg-base-100 text-base-content">
 			<Config bind:pixelSize bind:palette bind:bayerLevel bind:to_dither bind:noiseLevel />
-			{#if url}
+			{#if originalUrl}
 				<button
 					class="btn btn-success"
 					class:btn-disabled={loading}
