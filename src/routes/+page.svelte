@@ -91,7 +91,7 @@
 				{/if}
 			</div>
 		</div>
-		{#if processedUrl || true}
+		{#if processedUrl}
 			<ColorBar class="fixed bottom-0 z-10" {palette} />
 		{/if}
 		<!-- <img -->
@@ -100,7 +100,7 @@
 		<!-- src={processedUrl || originalUrl} -->
 		<!-- /> -->
 		<ImageSlider
-			class={'w-full h-full' + (!originalUrl && !processedUrl ? ' hidden' : '')}
+			class={'w-full' + (!originalUrl && !processedUrl ? ' hidden' : '')}
 			beforeUrl={originalUrl}
 			afterUrl={processedUrl}
 		/>

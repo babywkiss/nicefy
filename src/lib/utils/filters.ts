@@ -1,4 +1,7 @@
+import { rgba2lab, deltaE00 } from '$lib/utils/colour';
+
 type ImageMeta = { width: number; height: number; channels: number };
+type ColorTuple = [number, number, number, number];
 
 export const pixelate = (data: Uint8ClampedArray, info: ImageMeta, pixelSize: number) => {
 	const new_height = Math.floor(info.height / pixelSize);
@@ -12,14 +15,11 @@ export const pixelate = (data: Uint8ClampedArray, info: ImageMeta, pixelSize: nu
 			const avg = Array(channels).fill(0);
 			for (let yOff = 0; yOff < pixelSize; yOff++) {
 				for (let xOff = 0; xOff < pixelSize; xOff++) {
+					const pos =
+						channels *
+						((Math.floor(y * pixelSize) + yOff) * info.width + Math.floor(x * pixelSize) + xOff);
 					for (let colorOff = 0; colorOff < channels; colorOff++) {
-						avg[colorOff] +=
-							data[
-								channels *
-									((Math.floor(y * pixelSize) + yOff) * info.width +
-										(Math.floor(x * pixelSize) + xOff)) +
-									colorOff
-							] / divisor;
+						avg[colorOff] += data[pos + colorOff] / divisor;
 					}
 				}
 			}
@@ -41,35 +41,48 @@ export const dither = (
 	const { width, height, channels } = info;
 	for (let y = 0; y < height; y++) {
 		for (let x = 0; x < width; x++) {
+			const pos = channels * (y * width + x);
 			const noise = noiseLevel * bayerMatrix[(y % bayer_width) * bayer_width + (x % bayer_width)];
 			for (let c = 0; c < channels; c++) {
-				const value = data[channels * (y * width + x) + c];
+				const offPos = pos + c;
+				const value = data[offPos];
 				const new_val = value + noise;
-				data[channels * (y * width + x) + c] = new_val <= 255 ? (new_val >= 0 ? new_val : 0) : 255;
+				data[offPos] = new_val <= 255 ? (new_val >= 0 ? new_val : 0) : 255;
 			}
 		}
 	}
 };
 
 export const colorize = (data: Uint8ClampedArray, info: ImageMeta, palette: number[][]) => {
+	const palette_lab = palette.map((rgba) => rgba2lab(...(rgba as ColorTuple)));
 	const { width, height, channels } = info;
 	const p_size = palette.length;
 	for (let y = 0; y < height; y++) {
 		for (let x = 0; x < width; x++) {
+			const pos = channels * (y * width + x);
 			let minDiff = Infinity;
 			let pIndex = 0;
 			for (let p = 0; p < p_size; p++) {
-				let diff = 0;
+				const color = Array(channels);
 				for (let c = 0; c < channels; c++) {
-					diff += (palette[p][c] - data[channels * (y * width + x) + c]) ** 2;
+					color[c] = data[pos + c];
 				}
+				const lab_color = rgba2lab(color[0], color[1], color[2]);
+				const diff = deltaE00(
+					lab_color[0],
+					lab_color[1],
+					lab_color[2],
+					palette_lab[p][0],
+					palette_lab[p][1],
+					palette_lab[p][2]
+				);
 				if (diff < minDiff) {
 					minDiff = diff;
 					pIndex = p;
 				}
 			}
 			for (let c = 0; c < channels; c++) {
-				data[channels * (y * width + x) + c] = palette[pIndex][c];
+				data[pos + c] = palette[pIndex][c];
 			}
 		}
 	}

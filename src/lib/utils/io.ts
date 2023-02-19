@@ -38,10 +38,10 @@ export const process_image = (data: Uint8ClampedArray, info: ImageInfo, config: 
 	if (to_dither) {
 		dither(data, info, bayerMatrix(bayer_level), noiseLevel);
 	}
+	colorize(data, info, CATPPUCCIN[palette]);
 	if (pixelSize > 1) {
 		({ data, info } = pixelate(data, info, 1 / pixelSize));
 	}
-	colorize(data, info, CATPPUCCIN[palette]);
 	const imageData = new ImageData(data, info.width, info.height);
 	return imageData;
 };
