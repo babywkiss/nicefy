@@ -74,7 +74,7 @@
 <div class="drawer">
 	<input id="my-drawer" type="checkbox" class="drawer-toggle" />
 	<div class="drawer-content flex flex-col items-center">
-		<div class="navbar bg-base-100 sticky top-0 flex flex-col">
+		<div class="fixed navbar bg-base-100 top-0 flex flex-col z-10">
 			<div class="w-full flex flex-row gap-3 justify-between md:justify-start">
 				<label for="my-drawer" class="btn btn-square btn-ghost">
 					<IconMenu class="text-lg" />
@@ -91,8 +91,8 @@
 				{/if}
 			</div>
 		</div>
-		{#if processedUrl}
-			<ColorBar class="fixed bottom-0" {palette} />
+		{#if processedUrl || true}
+			<ColorBar class="fixed bottom-0 z-10" {palette} />
 		{/if}
 		<!-- <img -->
 		<!-- class:hidden={!originalUrl && !processedUrl} -->
