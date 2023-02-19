@@ -1839,8 +1839,17 @@ html{
   border-bottom-left-radius: var(--rounded-btn, 0.5rem);
   border-bottom-right-radius: var(--rounded-btn, 0.5rem);
 }
+.fixed{
+  position: fixed;
+}
+.absolute{
+  position: absolute;
+}
 .sticky{
   position: sticky;
+}
+.bottom-0{
+  bottom: 0px;
 }
 .top-0{
   top: 0px;
@@ -1856,6 +1865,9 @@ html{
 }
 .hidden{
   display: none;
+}
+.h-3{
+  height: 0.75rem;
 }
 .h-96{
   height: 24rem;
