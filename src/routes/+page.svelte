@@ -94,7 +94,7 @@
 		<label for="my-drawer" class="drawer-overlay" />
 		<ul class="menu p-4 w-80 bg-base-100 text-base-content">
 			<Config bind:pixelSize bind:palette bind:bayerLevel bind:to_dither />
-			{#if url || true}
+			{#if url}
 				<button class="btn btn-success" on:click={process}>Process</button>
 			{/if}
 		</ul>
