@@ -14,6 +14,6 @@
 
 ## Running locally
 
-- Clone repo
+- Clone repo and cd into project folder
 - Install deps with `npm i`
 - Run with `npm run dev`
