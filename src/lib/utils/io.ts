@@ -13,7 +13,9 @@ export type Config = {
 	palette: keyof typeof CATPPUCCIN;
 	to_dither: boolean;
 	bayer_level: number;
+	labComparison: boolean;
 	noiseLevel: number;
+	rescaleBack: boolean;
 };
 
 export const read_image = (url: string) => {
@@ -31,15 +33,16 @@ export const read_image = (url: string) => {
 };
 
 export const process_image = (data: Uint8ClampedArray, info: ImageInfo, config: Config) => {
-	const { pixelSize, palette, to_dither, bayer_level, noiseLevel } = config;
+	const { pixelSize, palette, to_dither, bayer_level, noiseLevel, labComparison, rescaleBack } =
+		config;
 	if (pixelSize > 1) {
 		({ data, info } = pixelate(data, info, pixelSize));
 	}
 	if (to_dither) {
 		dither(data, info, bayerMatrix(bayer_level), noiseLevel);
 	}
-	colorize(data, info, CATPPUCCIN[palette]);
-	if (pixelSize > 1) {
+	colorize(data, info, CATPPUCCIN[palette], labComparison);
+	if (pixelSize > 1 && rescaleBack) {
 		({ data, info } = pixelate(data, info, 1 / pixelSize));
 	}
 	const imageData = new ImageData(data, info.width, info.height);

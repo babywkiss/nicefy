@@ -15,18 +15,23 @@
 	onMount(() => {
 		procWorker = new ProcWorker();
 		procWorker.onmessage = (data) => {
-			const imageData = data.data;
+			const { imageData, tookMS } = data.data;
+			lastTookMS = tookMS;
 			processedUrl = getResUrl(imageData);
 			loading = false;
 		};
 	});
 
+	let menuOpen = false;
+	let lastTookMS: number;
 	let originalUrl = '';
 	let processedUrl = '';
-	let pixelSize = 1;
+	let pixelSize = 3;
 	let to_dither = true;
 	let bayerLevel = 3;
 	let noiseLevel = 32;
+	let labComparison = false;
+	let rescaleBack = true;
 	let palette: 'mocha' | 'frappe' | 'latte' | 'macchiato' = 'mocha';
 
 	let dropping = false;
@@ -34,6 +39,7 @@
 
 	const process = async () => {
 		loading = true;
+		menuOpen = false;
 		let { data, info } = read_image(originalUrl);
 		procWorker.postMessage({
 			data,
@@ -42,6 +48,8 @@
 				pixelSize,
 				to_dither,
 				bayer_level: bayerLevel,
+				labComparison,
+				rescaleBack,
 				noiseLevel,
 				palette
 			}
@@ -71,43 +79,37 @@
 	};
 </script>
 
-<div class="drawer">
-	<input id="my-drawer" type="checkbox" class="drawer-toggle" />
-	<div class="drawer-content flex flex-col items-center">
-		<div class="fixed navbar bg-base-100 top-0 flex flex-col z-10">
-			<div class="w-full flex flex-row gap-3 justify-between md:justify-start">
-				<label for="my-drawer" class="btn btn-square btn-ghost">
-					<IconMenu class="text-lg" />
-				</label>
-				{#if processedUrl}
-					<a class="btn btn-info btn-square" href={processedUrl} download="result.png">
-						<IconDownload />
-					</a>
-				{/if}
-				{#if originalUrl}
-					<button class="btn btn-warning" on:click={() => ((originalUrl = ''), (processedUrl = ''))}
-						><IconRefresh /></button
-					>
-				{/if}
-			</div>
+<div class="drawer drawer-mobile w-full h-full">
+	<input id="my-drawer" type="checkbox" class="drawer-toggle" bind:checked={menuOpen} />
+	<div class="drawer-content flex flex-col">
+		<div class="w-full flex flex-row gap-3 justify-start p-1 items-center">
+			<label for="my-drawer" class="btn btn-square btn-ghost md:hidden">
+				<IconMenu class="text-lg" />
+			</label>
+			{#if processedUrl}
+				<a class="btn btn-info btn-square" href={processedUrl} download="result.png">
+					<IconDownload />
+				</a>
+			{/if}
+			{#if originalUrl}
+				<button
+					class="btn btn-warning"
+					on:click={() => ((originalUrl = ''), (processedUrl = ''), (lastTookMS = 0))}
+					><IconRefresh /></button
+				>
+			{/if}
+			{#if loading}
+				<span class="loading btn">Processing image...</span>
+			{/if}
+			<span>{lastTookMS && !loading ? 'Processed in: ' + lastTookMS / 1000 + ' sec.' : ''}</span>
 		</div>
-		{#if processedUrl}
-			<ColorBar class="fixed bottom-0 z-10" {palette} />
-		{/if}
-		<!-- <img -->
-		<!-- class:hidden={!originalUrl && !processedUrl} -->
-		<!-- alt="result" -->
-		<!-- src={processedUrl || originalUrl} -->
-		<!-- /> -->
-		<ImageSlider
-			class={'w-full' + (!originalUrl && !processedUrl ? ' hidden' : '')}
-			beforeUrl={originalUrl}
-			afterUrl={processedUrl}
-		/>
+		<div class={!originalUrl && !processedUrl ? 'hidden' : 'flex flex-1 overflow-scroll'}>
+			<ImageSlider beforeUrl={originalUrl} afterUrl={processedUrl} />
+		</div>
 		<div
 			class:hidden={originalUrl}
-			class="border-4 w-96 h-96 flex flex-col text-xl items-center justify-center rounded-xl m-auto"
-			class:border-green-300={dropping}
+			class="flex flex-1 flex-col text-xl items-center justify-center"
+			class:bg-success={dropping}
 			on:dragenter|preventDefault={(_) => (dropping = true)}
 			on:dragleave|preventDefault={(_) => (dropping = false)}
 			on:dragover|preventDefault
@@ -116,22 +118,35 @@
 			<input
 				class="file-input file-input-bordered file-input-success file-input-sm"
 				type="file"
+				class:hidden={dropping}
 				on:change={onUpload}
 			/>
-			<div class="divider">or</div>
-			<span class="text-xl font-bold">Drop here</span>
+			<div class="divider" class:hidden={dropping}>or</div>
+			<span class="text-xl font-bold"
+				>{dropping ? 'Leave mouse button to drop image' : 'Drop here'}</span
+			>
 		</div>
+		<ColorBar {palette} />
 	</div>
+
 	<div class="drawer-side">
 		<label for="my-drawer" class="drawer-overlay" />
 		<ul class="menu p-4 w-80 bg-base-100 text-base-content">
-			<Config bind:pixelSize bind:palette bind:bayerLevel bind:to_dither bind:noiseLevel />
+			<Config
+				bind:pixelSize
+				bind:palette
+				bind:rescaleBack
+				bind:bayerLevel
+				bind:to_dither
+				bind:noiseLevel
+				bind:labComparison
+			/>
 			{#if originalUrl}
 				<button
 					class="btn btn-success"
 					class:btn-disabled={loading}
 					class:loading
-					on:click={process}>Process</button
+					on:click={process}>{loading ? 'processing' : 'process'}</button
 				>
 			{/if}
 		</ul>

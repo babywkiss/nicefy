@@ -53,8 +53,14 @@ export const dither = (
 	}
 };
 
-export const colorize = (data: Uint8ClampedArray, info: ImageMeta, palette: number[][]) => {
-	const palette_lab = palette.map((rgba) => rgba2lab(...(rgba as ColorTuple)));
+export const colorize = (
+	data: Uint8ClampedArray,
+	info: ImageMeta,
+	palette: number[][],
+	labComparison: boolean
+) => {
+	let palette_lab;
+	if (labComparison) palette_lab = palette.map((rgba) => rgba2lab(...(rgba as ColorTuple)));
 	const { width, height, channels } = info;
 	const p_size = palette.length;
 	for (let y = 0; y < height; y++) {
@@ -63,19 +69,28 @@ export const colorize = (data: Uint8ClampedArray, info: ImageMeta, palette: numb
 			let minDiff = Infinity;
 			let pIndex = 0;
 			for (let p = 0; p < p_size; p++) {
+				let p_color = labComparison ? (palette_lab as number[][])[p] : palette[p];
 				const color = Array(channels);
 				for (let c = 0; c < channels; c++) {
 					color[c] = data[pos + c];
 				}
-				const lab_color = rgba2lab(color[0], color[1], color[2]);
-				const diff = deltaE00(
-					lab_color[0],
-					lab_color[1],
-					lab_color[2],
-					palette_lab[p][0],
-					palette_lab[p][1],
-					palette_lab[p][2]
-				);
+				let diff;
+				if (labComparison) {
+					const lab_color = rgba2lab(color[0], color[1], color[2]);
+					diff = deltaE00(
+						lab_color[0],
+						lab_color[1],
+						lab_color[2],
+						p_color[0],
+						p_color[1],
+						p_color[2]
+					);
+				} else {
+					diff =
+						Math.abs(p_color[0] - color[0]) +
+						Math.abs(p_color[1] - color[1]) +
+						Math.abs(p_color[2] - color[2]);
+				}
 				if (diff < minDiff) {
 					minDiff = diff;
 					pIndex = p;
