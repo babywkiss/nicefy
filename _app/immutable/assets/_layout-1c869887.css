@@ -607,6 +607,10 @@ html{
     .btn.loading:hover{
   pointer-events: none;
 }
+.btn.\!loading,
+    .btn.\!loading:hover{
+  pointer-events: none !important;
+}
 .btn.loading:before{
   margin-right: 0.5rem;
   height: 1rem;
@@ -620,9 +624,25 @@ html{
   border-bottom-color: currentColor;
   border-right-color: currentColor;
 }
+.btn.\!loading:before{
+  margin-right: 0.5rem !important;
+  height: 1rem !important;
+  width: 1rem !important;
+  border-radius: 9999px !important;
+  border-width: 2px !important;
+  animation: spin 2s linear infinite !important;
+  content: "" !important;
+  border-top-color: transparent !important;
+  border-left-color: transparent !important;
+  border-bottom-color: currentColor !important;
+  border-right-color: currentColor !important;
+}
 @media (prefers-reduced-motion: reduce){
   .btn.loading:before{
     animation: spin 10s linear infinite;
+  }
+  .btn.\!loading:before{
+    animation: spin 10s linear infinite !important;
   }
 }
 @keyframes spin{
@@ -1014,17 +1034,6 @@ html{
 .menu > :where(li:focus) > :where(ul){
   display: flex;
 }
-.navbar{
-  display: flex;
-  align-items: center;
-  padding: var(--navbar-padding, 0.5rem);
-  min-height: 4rem;
-  width: 100%;
-}
-:where(.navbar > *){
-  display: inline-flex;
-  align-items: center;
-}
 .range{
   height: 1.5rem;
   width: 100%;
@@ -1248,15 +1257,29 @@ html{
     .btn.loading.btn-circle:before{
   margin-right: 0px;
 }
+.btn.\!loading.btn-square:before,
+    .btn.\!loading.btn-circle:before{
+  margin-right: 0px !important;
+}
 .btn.loading.btn-xl:before,
     .btn.loading.btn-lg:before{
   height: 1.25rem;
   width: 1.25rem;
 }
+.btn.\!loading.btn-xl:before,
+    .btn.\!loading.btn-lg:before{
+  height: 1.25rem !important;
+  width: 1.25rem !important;
+}
 .btn.loading.btn-sm:before,
     .btn.loading.btn-xs:before{
   height: 0.75rem;
   width: 0.75rem;
+}
+.btn.\!loading.btn-sm:before,
+    .btn.\!loading.btn-xs:before{
+  height: 0.75rem !important;
+  width: 0.75rem !important;
 }
 .btn-group > input[type="radio"]:checked.btn,
   .btn-group > .btn-active{
@@ -1839,26 +1862,14 @@ html{
   border-bottom-left-radius: var(--rounded-btn, 0.5rem);
   border-bottom-right-radius: var(--rounded-btn, 0.5rem);
 }
-.fixed{
-  position: fixed;
-}
-.absolute{
-  position: absolute;
-}
-.bottom-0{
-  bottom: 0px;
-}
-.top-0{
-  top: 0px;
-}
-.z-10{
-  z-index: 10;
-}
-.m-auto{
-  margin: auto;
+.inline-block{
+  display: inline-block;
 }
 .flex{
   display: flex;
+}
+.grid{
+  display: grid;
 }
 .contents{
   display: contents;
@@ -1869,9 +1880,6 @@ html{
 .h-3{
   height: 0.75rem;
 }
-.h-96{
-  height: 24rem;
-}
 .h-full{
   height: 100%;
 }
@@ -1881,11 +1889,16 @@ html{
 .w-80{
   width: 20rem;
 }
-.w-96{
-  width: 24rem;
-}
 .w-full{
   width: 100%;
+}
+.flex-1{
+  flex: 1 1 0%;
+}
+.select-none{
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
 }
 .flex-row{
   flex-direction: row;
@@ -1896,31 +1909,37 @@ html{
 .items-center{
   align-items: center;
 }
+.justify-start{
+  justify-content: flex-start;
+}
 .justify-center{
   justify-content: center;
-}
-.justify-between{
-  justify-content: space-between;
 }
 .gap-3{
   gap: 0.75rem;
 }
+.overflow-hidden{
+  overflow: hidden;
+}
+.overflow-scroll{
+  overflow: scroll;
+}
 .rounded-lg{
   border-radius: 0.5rem;
-}
-.rounded-xl{
-  border-radius: 0.75rem;
-}
-.border-4{
-  border-width: 4px;
-}
-.border-green-300{
-  --tw-border-opacity: 1;
-  border-color: rgb(134 239 172 / var(--tw-border-opacity));
 }
 .bg-base-100{
   --tw-bg-opacity: 1;
   background-color: hsl(var(--b1) / var(--tw-bg-opacity));
+}
+.bg-success{
+  --tw-bg-opacity: 1;
+  background-color: hsl(var(--su) / var(--tw-bg-opacity));
+}
+.p-1{
+  padding: 0.25rem;
+}
+.p-10{
+  padding: 2.5rem;
 }
 .p-4{
   padding: 1rem;
@@ -1936,12 +1955,20 @@ html{
   font-size: 1.25rem;
   line-height: 1.75rem;
 }
+.text-xs{
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
 .font-bold{
   font-weight: 700;
 }
 .text-base-content{
   --tw-text-opacity: 1;
   color: hsl(var(--bc) / var(--tw-text-opacity));
+}
+.text-warning{
+  --tw-text-opacity: 1;
+  color: hsl(var(--wa) / var(--tw-text-opacity));
 }
 .outline-none{
   outline: 2px solid transparent;
@@ -1960,7 +1987,7 @@ body {
   outline-offset: 2px;
 }
 @media (min-width: 768px){
-  .md\:justify-start{
-    justify-content: flex-start;
+  .md\:hidden{
+    display: none;
   }
 }
