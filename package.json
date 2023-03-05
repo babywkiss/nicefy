@@ -38,6 +38,7 @@
 	"type": "module",
 	"dependencies": {
 		"@catppuccin/palette": "^0.1.6",
+		"color-delta-e": "^1.1.2",
 		"daisyui": "^2.50.1"
 	}
 }

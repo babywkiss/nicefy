@@ -1,78 +1,19 @@
-export const rgba2lab = (r: number, g: number, b: number, a = 1) => {
-	const [x, y, z] = rgb2xyz(r, g, b, a);
-	return xyz2lab(x, y, z); // [l, a, b]
-};
-
-const rgb2xyz = (r: number, g: number, b: number, a = 1) => {
-	if (r > 255) {
-		r = 255;
-	} else if (r < 0) {
-		r = 0;
-	}
-	if (g > 255) {
-		g = 255;
-	} else if (g < 0) {
-		g = 0;
-	}
-	if (b > 255) {
-		b = 255;
-	} else if (b < 0) {
-		b = 0;
-	}
-	if (a > 1) {
-		a = 1;
-	} else if (a < 0) {
-		a = 0;
-	}
-	r = r / 255;
-	g = g / 255;
-	b = b / 255;
-	if (r > 0.04045) {
-		r = Math.pow((r + 0.055) / 1.055, 2.4);
-	} else {
-		r = r / 12.92;
-	}
-	if (g > 0.04045) {
-		g = Math.pow((g + 0.055) / 1.055, 2.4);
-	} else {
-		g = g / 12.92;
-	}
-	if (b > 0.04045) {
-		b = Math.pow((b + 0.055) / 1.055, 2.4);
-	} else {
-		b = b / 12.92;
-	}
-	r = r * 100;
-	g = g * 100;
-	b = b * 100;
+const rgb2xyz = (r: number, g: number, b: number): [number, number, number] => {
+	const f = (v: number) => (v > 0.04045 ? (v + 0.055 / 1.055) ** 2.4 : v / 12.92) * 100;
+	[r, g, b] = [f(r), f(g), f(b)];
 	const x = r * 0.4124564 + g * 0.3575761 + b * 0.1804375;
 	const y = r * 0.2126729 + g * 0.7151522 + b * 0.072175;
 	const z = r * 0.0193339 + g * 0.119192 + b * 0.9503041;
 	return [x, y, z];
 };
 
-export const xyz2lab = (x: number, y: number, z: number) => {
-	const referenceX = 94.811;
-	const referenceY = 100;
-	const referenceZ = 107.304;
-	x = x / referenceX;
-	y = y / referenceY;
-	z = z / referenceZ;
-	if (x > 0.008856) {
-		x = Math.pow(x, 1 / 3);
-	} else {
-		x = 7.787 * x + 16 / 116;
-	}
-	if (y > 0.008856) {
-		y = Math.pow(y, 1 / 3);
-	} else {
-		y = 7.787 * y + 16 / 116;
-	}
-	if (z > 0.008856) {
-		z = Math.pow(z, 1 / 3);
-	} else {
-		z = 7.787 * z + 16 / 116;
-	}
+const xyz2lab = (x: number, y: number, z: number): [number, number, number] => {
+	x /= 94.811;
+	y /= 100;
+	z /= 107.304;
+	x = x > 0.008856 ? x ** (1 / 3) : x * 7.787 + 16 / 116;
+	x = x > 0.008856 ? x ** (1 / 3) : x * 7.787 + 16 / 116;
+	x = x > 0.008856 ? x ** (1 / 3) : x * 7.787 + 16 / 116;
 	const l = 116 * y - 16;
 	const a = 500 * (x - y);
 	const b = 200 * (y - z);
@@ -81,6 +22,12 @@ export const xyz2lab = (x: number, y: number, z: number) => {
 
 const rad2deg = (rad: number) => (360 * rad) / (2 * Math.PI);
 const deg2rad = (deg: number) => (2 * Math.PI * deg) / 360;
+
+export const rgb2lab = (r: number, g: number, b: number) => {
+	console.log(r, g, b);
+	const [x, y, z] = rgb2xyz(r, g, b);
+	return xyz2lab(x, y, z);
+};
 
 export const deltaE00 = (
 	l1: number,
@@ -143,3 +90,9 @@ export const deltaE00 = (
 	);
 	return deltaE;
 };
+
+export const labDiff = (r1: number, g1: number, b1: number, r2: number, g2: number, b2: number) =>
+	deltaE00(...rgb2lab(r1, g1, b1), ...rgb2lab(r2, g2, b2));
+
+export const rgbDiff = (r1: number, g1: number, b1: number, r2: number, g2: number, b2: number) =>
+	Math.abs(r1 - r2) + Math.abs(g1 - g2) + Math.abs(b1 - b2);

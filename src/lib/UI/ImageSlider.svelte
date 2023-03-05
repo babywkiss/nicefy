@@ -33,7 +33,7 @@
 	on:mouseleave={() => (pressed = false)}
 >
 	<img
-		class="select-none"
+		class="select-none w-full"
 		on:dragstart|preventDefault
 		src={beforeUrl}
 		alt="before"
@@ -43,7 +43,7 @@
 	/>
 	{#if afterUrl}
 		<img
-			class="select-none"
+			class="select-none w-full"
 			on:dragstart|preventDefault
 			bind:this={afterImg}
 			src={afterUrl}
@@ -56,7 +56,8 @@
 			class:hidden={!showTip}
 		>
 			<div class="bg-base-100 p-5 rounded-lg font-bold inline-block">
-				Tip: Drag over the image to compare with original
+				<span class="text-warning"> ? Note: </span>
+				Drag over the image to compare with original
 			</div>
 		</div>
 	{/if}

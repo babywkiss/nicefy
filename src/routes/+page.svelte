@@ -1,4 +1,6 @@
 <script lang="ts">
+	import IconTime from '~icons/ri/time-line';
+	import IconPlay from '~icons/ri/play-line';
 	import ProcWorker from './processing.worker?worker';
 
 	import IconMenu from '~icons/ri/menu-fill';
@@ -9,6 +11,7 @@
 	import ImageSlider from '$lib/UI/ImageSlider.svelte';
 	import { getResUrl, read_image } from '$lib/utils/io';
 	import { onMount } from 'svelte';
+	import type { CATPPUCCIN } from '$lib/utils/palettes';
 
 	let procWorker: Worker;
 
@@ -22,17 +25,20 @@
 		};
 	});
 
+	let config = {
+		pixelSize: 1,
+		palette: 'mocha' as keyof typeof CATPPUCCIN,
+		toDither: true,
+		bayerLevel: 3,
+		labComparison: false,
+		noiseLevel: 27,
+		rescaleBack: true
+	};
+
 	let menuOpen = false;
 	let lastTookMS: number;
 	let originalUrl = '';
 	let processedUrl = '';
-	let pixelSize = 3;
-	let to_dither = true;
-	let bayerLevel = 3;
-	let noiseLevel = 32;
-	let labComparison = false;
-	let rescaleBack = true;
-	let palette: 'mocha' | 'frappe' | 'latte' | 'macchiato' = 'mocha';
 
 	let dropping = false;
 	let loading = false;
@@ -41,19 +47,7 @@
 		loading = true;
 		menuOpen = false;
 		let { data, info } = read_image(originalUrl);
-		procWorker.postMessage({
-			data,
-			info,
-			config: {
-				pixelSize,
-				to_dither,
-				bayer_level: bayerLevel,
-				labComparison,
-				rescaleBack,
-				noiseLevel,
-				palette
-			}
-		});
+		procWorker.postMessage({ data, info, config });
 	};
 
 	const handleFile = (file: File) => {
@@ -82,29 +76,41 @@
 <div class="drawer drawer-mobile w-full h-full">
 	<input id="my-drawer" type="checkbox" class="drawer-toggle" bind:checked={menuOpen} />
 	<div class="drawer-content flex flex-col">
-		<div class="w-full flex flex-row gap-3 justify-start p-1 items-center">
+		<div class="w-full flex flex-row gap-3 justify-start p-3 items-center flex-wrap">
 			<label for="my-drawer" class="btn btn-square btn-ghost md:hidden">
 				<IconMenu class="text-lg" />
 			</label>
 			{#if processedUrl}
-				<a class="btn btn-info btn-square" href={processedUrl} download="result.png">
+				<a class="btn btn-info" href={processedUrl} download="result.png">
+					Download
 					<IconDownload />
 				</a>
 			{/if}
 			{#if originalUrl}
 				<button
+					class="btn btn-success"
+					class:btn-disabled={loading}
+					class:loading
+					on:click={process}
+				>
+					{loading ? 'processing' : 'run'}
+					{#if !loading}<IconPlay />{/if}
+				</button>
+				<button
 					class="btn btn-warning"
 					on:click={() => ((originalUrl = ''), (processedUrl = ''), (lastTookMS = 0))}
-					><IconRefresh /></button
+					>Reset<IconRefresh /></button
 				>
 			{/if}
-			{#if loading}
-				<span class="loading btn">Processing image...</span>
+			{#if lastTookMS}
+				<span class="ml-auto">
+					<IconTime class="inline" />
+					{'Processed in: ' + lastTookMS / 1000 + ' sec.'}
+				</span>
 			{/if}
-			<span>{lastTookMS && !loading ? 'Processed in: ' + lastTookMS / 1000 + ' sec.' : ''}</span>
 		</div>
 		<div class={!originalUrl && !processedUrl ? 'hidden' : 'flex flex-1 overflow-scroll'}>
-			<ImageSlider beforeUrl={originalUrl} afterUrl={processedUrl} />
+			<ImageSlider beforeUrl={originalUrl} afterUrl={processedUrl} class="w-full" />
 		</div>
 		<div
 			class:hidden={originalUrl}
@@ -126,29 +132,11 @@
 				>{dropping ? 'Leave mouse button to drop image' : 'Drop here'}</span
 			>
 		</div>
-		<ColorBar {palette} />
+		<ColorBar palette={config.palette} />
 	</div>
 
-	<div class="drawer-side">
+	<div class="drawer-side bg-base-100">
 		<label for="my-drawer" class="drawer-overlay" />
-		<ul class="menu p-4 w-80 bg-base-100 text-base-content">
-			<Config
-				bind:pixelSize
-				bind:palette
-				bind:rescaleBack
-				bind:bayerLevel
-				bind:to_dither
-				bind:noiseLevel
-				bind:labComparison
-			/>
-			{#if originalUrl}
-				<button
-					class="btn btn-success"
-					class:btn-disabled={loading}
-					class:loading
-					on:click={process}>{loading ? 'processing' : 'process'}</button
-				>
-			{/if}
-		</ul>
+		<Config bind:config />
 	</div>
 </div>
