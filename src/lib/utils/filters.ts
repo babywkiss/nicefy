@@ -44,7 +44,7 @@ export const dither = (
 			const pos = channels * (y * width + x);
 			const matrixPos = (y % matrixWidth) * matrixWidth + (x % matrixWidth);
 			const noise = noiseLevel * bayerMatrix[matrixPos];
-			for (let colorOff = 0; colorOff < channels; colorOff++) {
+			for (let colorOff = 0; colorOff < 3; colorOff++) {
 				const value = data[pos + colorOff] + noise;
 				data[pos + colorOff] = value <= 255 ? (value >= 0 ? value : 0) : 255;
 			}
@@ -67,21 +67,19 @@ export const colorize = (
 			let paletteIndex = 0;
 			for (let p = 0; p < paletteSize; p++) {
 				const pC = palette[p];
-				const cC = Array(channels);
-				for (let c = 0; c < channels; c++) {
-					cC[c] = data[pos + c];
-				}
 				const diff = labComparison
-					? deltaE([cC[0], cC[1], cC[2]], [pC[0], pC[1], pC[2]], 'rgb')
-					: Math.abs(cC[0] - pC[0]) + Math.abs(cC[1] - pC[1]) + Math.abs(cC[2] - pC[2]);
+					? deltaE([data[pos], data[pos + 1], data[pos + 2]], pC as [number, number, number], 'rgb')
+					: Math.abs(data[pos] - pC[0]) +
+					  Math.abs(data[pos + 1] - pC[1]) +
+					  Math.abs(data[pos + 2] - pC[2]);
 				if (diff < minDiff) {
 					minDiff = diff;
 					paletteIndex = p;
 				}
 			}
-			for (let c = 0; c < channels; c++) {
-				data[pos + c] = palette[paletteIndex][c];
-			}
+			data[pos] = palette[paletteIndex][0];
+			data[pos + 1] = palette[paletteIndex][1];
+			data[pos + 2] = palette[paletteIndex][2];
 		}
 	}
 };

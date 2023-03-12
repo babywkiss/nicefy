@@ -15,8 +15,10 @@
 			m.x = e.touches[0].pageX - (e.currentTarget as HTMLDivElement).offsetLeft;
 			m.y = e.touches[0].pageY - (e.currentTarget as HTMLDivElement).offsetLeft;
 		}
-		if (afterImg && (pressed || e instanceof TouchEvent) && afterUrl) showTip = false;
-		afterImg.style.clipPath = `inset(0 0 0 ${m.x}px)`;
+		if (afterImg && pressed && afterUrl) {
+			showTip = false;
+			afterImg.style.clipPath = `inset(0 0 0 ${m.x}px)`;
+		}
 	};
 
 	$: height = afterUrl && afterImg ? afterImg.height : '';
@@ -27,7 +29,7 @@
 	class={'grid ' + $$props.class || ''}
 	style="grid-template-columns: 1fr; grid-template-rows: 1fr;"
 	on:mousemove={handleMouseMove}
-	on:touchmove|preventDefault={handleMouseMove}
+	on:touchmove|preventDefault={(e) => (handleMouseMove(e), (pressed = true))}
 	on:mousedown={() => (pressed = true)}
 	on:mouseup={() => (pressed = false)}
 	on:mouseleave={() => (pressed = false)}
@@ -55,8 +57,8 @@
 			class="flex flex-col p-10"
 			class:hidden={!showTip}
 		>
-			<div class="bg-base-100 p-5 rounded-lg font-bold inline-block">
-				<span class="text-warning"> ? Note: </span>
+			<div class="p-5 rounded-lg font-bold inline-block bg-surface-500">
+				<span class="text-warning-500"> ? Note: </span>
 				Drag over the image to compare with original
 			</div>
 		</div>

@@ -16,3 +16,12 @@ const getThreeshold = (level: number): number[] => {
 
 export const bayerMatrix = (level: number) =>
 	getThreeshold(level).map((v) => v / 4 ** (level + 1) - 0.5);
+
+export const rgbToHex = (color: number[]) =>
+	'#' +
+	color
+		.map((x) => {
+			const hex = x.toString(16);
+			return hex.length === 1 ? '0' + hex : hex;
+		})
+		.join('');

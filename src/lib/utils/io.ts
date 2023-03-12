@@ -1,6 +1,5 @@
 import { colorize, dither, scale } from './filters';
 import { bayerMatrix } from './helpers';
-import { CATPPUCCIN } from './palettes';
 
 export type ImageInfo = {
 	width: number;
@@ -10,7 +9,7 @@ export type ImageInfo = {
 
 export type Config = {
 	pixelSize: number;
-	palette: keyof typeof CATPPUCCIN;
+	palette: { title: string; colors: number[][] };
 	toDither: boolean;
 	bayerLevel: number;
 	labComparison: boolean;
@@ -41,7 +40,7 @@ export const process_image = (data: Uint8ClampedArray, info: ImageInfo, config: 
 	if (toDither) {
 		dither(data, info, bayerMatrix(bayerLevel), noiseLevel);
 	}
-	colorize(data, info, CATPPUCCIN[palette], labComparison);
+	colorize(data, info, palette.colors, labComparison);
 	if (pixelSize > 1 && rescaleBack) {
 		({ data, info } = scale(data, info, pixelSize));
 	}
