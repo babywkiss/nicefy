@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { originalUrl, processedUrl } from './store';
 	import { FileDropzone } from '@skeletonlabs/skeleton';
 	import ImageSlider from '$lib/ImageSlider.svelte';
+	import { originalUrl, processedUrl } from './store';
 
 	let files: FileList;
 

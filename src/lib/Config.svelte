@@ -1,15 +1,10 @@
 <script lang="ts">
-	import {
-		Accordion,
-		AccordionItem,
-		filter,
-		RangeSlider,
-		SlideToggle
-	} from '@skeletonlabs/skeleton';
+	import { Accordion, AccordionItem, RangeSlider, SlideToggle } from '@skeletonlabs/skeleton';
 	import VirtualScroll from 'svelte-virtual-scroll-list';
-	import { rgbToHex } from '$lib/utils/helpers';
 	import type { Config } from '$lib/utils/io';
 	import palettes from '$lib/utils/palettes';
+	import { rgbToHex } from '$lib/utils/helpers';
+
 	export let config: Config;
 
 	let query = '';

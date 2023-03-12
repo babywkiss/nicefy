@@ -1,14 +1,14 @@
 <script lang="ts">
-	import ProcWorker from './processing.worker?worker';
-	import 'iconify-icon';
-	import { config, originalUrl, processedUrl } from './store';
-	import { getResUrl, read_image } from '$lib/utils/io';
-	import Config from '$lib/Config.svelte';
 	import '../theme.postcss';
 	import '@skeletonlabs/skeleton/styles/all.css';
 	import '../app.postcss';
-	import { AppShell, AppBar, Drawer, drawerStore } from '@skeletonlabs/skeleton';
+	import 'iconify-icon';
 	import { onMount } from 'svelte';
+	import { getResUrl, read_image } from '$lib/utils/io';
+	import { config, originalUrl, processedUrl } from './store';
+	import { AppShell, AppBar, Drawer, drawerStore } from '@skeletonlabs/skeleton';
+	import Config from '$lib/Config.svelte';
+	import ProcWorker from './processing.worker?worker';
 
 	let procWorker: Worker;
 	let lastTookMS: number;
