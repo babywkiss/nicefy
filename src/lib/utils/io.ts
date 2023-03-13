@@ -9,7 +9,7 @@ export type ImageInfo = {
 
 export type Config = {
 	pixelSize: number;
-	palette: { title: string; colors: number[][] };
+	palette: { id: number; title: string; colors: number[][] };
 	toDither: boolean;
 	bayerLevel: number;
 	labComparison: boolean;

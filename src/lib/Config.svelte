@@ -10,7 +10,7 @@
 	let query = '';
 </script>
 
-<Accordion>
+<Accordion autocollapse>
 	<AccordionItem>
 		<svelte:fragment slot="summary">Pixelization</svelte:fragment>
 		<svelte:fragment slot="content">
@@ -71,15 +71,15 @@
 				<input type="search" placeholder="Search..." bind:value={query} />
 			</div>
 			<h6>Selected: {config.palette.title}</h6>
-			<ul class="list h-48">
+			<ul class="list h-64">
 				<VirtualScroll
 					data={query ? palettes.filter((p) => p.title.includes(query)) : palettes}
-					key="title"
+					key="id"
 					let:data
 				>
 					<button
-						class="btn w-full"
-						class:variant-filled-primary={config.palette.title === data.title}
+						class="btn w-full flex-col"
+						class:variant-filled-primary={config.palette.id === data.id}
 						on:click={() => (config.palette = data)}
 					>
 						<span>{data.title}</span>
