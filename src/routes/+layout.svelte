@@ -59,6 +59,11 @@
 				{#if lastTookMS}
 					<span class="hidden md:block">Took {(lastTookMS / 1000).toFixed(2)} sec.</span>
 				{/if}
+				{#if $processedUrl}
+					<a class="btn variant-filled-primary" href={$processedUrl} download="niced.png">
+						<iconify-icon icon="ic:baseline-download" />
+					</a>
+				{/if}
 				{#if $originalUrl}
 					<button class="btn variant-filled-success" on:click={process} class:disabled={loading}>
 						{#if !loading}
