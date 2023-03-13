@@ -2106,11 +2106,11 @@ input[type='file']:not(.file-dropzone-input)::file-selector-button {
 .h-3 {
   height: 0.75rem;
 }
-.h-48 {
-  height: 12rem;
-}
 .h-6 {
   height: 1.5rem;
+}
+.h-64 {
+  height: 16rem;
 }
 .h-8 {
   height: 2rem;
