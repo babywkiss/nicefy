@@ -12,6 +12,9 @@
 
 <Accordion autocollapse>
 	<AccordionItem>
+		<svelte:fragment slot="lead">
+			<iconify-icon icon="material-symbols:grid-view-rounded" />
+		</svelte:fragment>
 		<svelte:fragment slot="summary">Pixelization</svelte:fragment>
 		<svelte:fragment slot="content">
 			<RangeSlider
@@ -33,6 +36,9 @@
 		</svelte:fragment>
 	</AccordionItem>
 	<AccordionItem>
+		<svelte:fragment slot="lead">
+			<iconify-icon icon="material-symbols:gradient" />
+		</svelte:fragment>
 		<svelte:fragment slot="summary">Dithering</svelte:fragment>
 		<svelte:fragment slot="content">
 			<SlideToggle name="slider-label" bind:checked={config.toDither}>Apply dithering</SlideToggle>
@@ -58,6 +64,9 @@
 		</svelte:fragment>
 	</AccordionItem>
 	<AccordionItem>
+		<svelte:fragment slot="lead">
+			<iconify-icon icon="ic:round-color-lens" />
+		</svelte:fragment>
 		<svelte:fragment slot="summary">Colorizing</svelte:fragment>
 		<svelte:fragment slot="content">
 			<SlideToggle name="slider-label" bind:checked={config.labComparison}
