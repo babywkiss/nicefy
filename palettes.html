@@ -17,7 +17,7 @@
 		<link rel="modulepreload" href="./_app/immutable/chunks/stores.2d9c07ce.js">
 		<link rel="modulepreload" href="./_app/immutable/entry/_layout.ts.984db11e.js">
 		<link rel="modulepreload" href="./_app/immutable/chunks/_layout.da46b06b.js">
-		<link rel="modulepreload" href="./_app/immutable/entry/_page.svelte.2eeae527.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/palettes-page.svelte.60fc518b.js">
 	</head>
 	<body data-theme="skeleton">
 		<div style="display: contents" class="h-full overflow-hidden">
@@ -51,19 +51,12 @@
 			
 
 			
-			<main id="page-content" class="flex-auto "><div class="hidden"><div class="grid " style="grid-template-columns: 1fr; grid-template-rows: 1fr;"><img class="select-none w-full" src="" alt="before" height="" width="" style="grid-column: 1 / 2; grid-row: 1 / 2; z-index: 1;">
-	</div></div>
-
-<div class="flex w-full h-full justify-center items-center"><div class="dropzone textarea relative flex justify-center items-center border-2 border-dashed p-4 py-8 rounded-container-token w-3/4 md:w-1/3 h-1/2" data-testid="file-dropzone">
-	
-	<input type="file" name="files" class="dropzone-input w-full absolute top-0 left-0 right-0 bottom-0 z-[1] opacity-0 disabled:!opacity-0 cursor-pointer">
-	
-	<div class="dropzone-interface flex justify-center items-center text-center "><div class="dropzone-interface-text ">
-			<div class="dropzone-lead mb-4"><iconify-icon icon="material-symbols:upload-file-rounded" class="text-3xl"></iconify-icon></div>
-			
-			<div class="dropzone-message ">Upload image or drop here</div>
-			
-			</div></div></div></div></main>
+			<main id="page-content" class="flex-auto "><div class="flex flex-col w-full h-full p-5 gap-5"><span class="text-xl font-bold">My Palettes</span>
+	<hr class="!border-t-4">
+	<div class="input-group input-group-divider grid-cols-[auto_1fr_auto] w-fit flex-shrink-0"><div class="input-group-shim"><iconify-icon icon="material-symbols:search" class="text-xl"></iconify-icon></div>
+		<input type="search" placeholder="Search..." value=""></div>
+	<div class="grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 overflow-auto">
+		<button class="btn variant-filled-surface rounded-lg"><iconify-icon icon="material-symbols:add" class="text-7xl opacity-50"></iconify-icon></button></div></div></main>
 
 			
 			</div>
@@ -91,7 +84,7 @@
 						import("./_app/immutable/entry/app.24f0093d.js")
 					]).then(([kit, app]) => {
 						kit.start(app, __sveltekit_1mmafdp.element, {
-							node_ids: [0, 2],
+							node_ids: [0, 3],
 							data,
 							form: null,
 							error: null

@@ -1471,6 +1471,23 @@ progress::-webkit-progress-value {
 		/* Theme: Rounded */
 		border-radius: var(--theme-rounded-base);
 }
+.badge-icon {
+		/* Core */
+		display: flex;
+		height: 1.25rem;
+		width: 1.25rem;
+		align-items: center;
+		justify-content: center;
+		border-radius: 9999px;
+		/* Text */
+		font-size: 0.75rem;
+		line-height: 1rem;
+		font-weight: 600;
+		/* Shadow */
+		--tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+		--tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
+		box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+	}
 /* === Variants === */
 /* Glass */
 /* === Auto-Responsive === */
@@ -1603,6 +1620,12 @@ button:disabled:active {
   font-size: 0.875rem;
   line-height: 1.25rem;
 }
+.btn-icon-lg {
+  aspect-ratio: 1 / 1;
+  width: 53px;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
 /* File Input Button */
 input[type='file']:not(.file-dropzone-input)::file-selector-button {
 		/* Size (match base)  */
@@ -1671,8 +1694,43 @@ input[type='file']:not(.file-dropzone-input)::file-selector-button {
 /* === Button Groups === */
 /* Button / Anchors */
 /* Set Neutral Divider */
+.card {
+		/* background */
+		background-color: rgb(var(--color-surface-100));
+	}
+.dark .card {
+  background-color: rgb(var(--color-surface-800));
+}
+.card {
+		/* Ring */
+		--tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+		--tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+		box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+		--tw-ring-inset: inset;
+		--tw-ring-color: rgb(23 23 23 / 0.05);;
+	}
+.dark .card {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  --tw-ring-inset: inset;
+  --tw-ring-color: rgb(250 250 250 / 0.05);
+}
+.card {
+		/* Theme: Rounded */
+		border-radius: var(--theme-rounded-container);
+	}
 /* === Regions === */
 /* === States === */
+a.card {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+a.card:hover {
+  --tw-brightness: brightness(1.05);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
 .chip {
   cursor: pointer;
   white-space: nowrap;
@@ -1937,6 +1995,16 @@ input[type='file']:not(.file-dropzone-input)::file-selector-button {
   background-color: rgb(var(--color-warning-500) / var(--tw-bg-opacity));
   color: rgb(var(--on-warning));
 }
+.variant-filled-error {
+  --tw-bg-opacity: 1;
+  background-color: rgb(var(--color-error-500) / var(--tw-bg-opacity));
+  color: rgb(var(--on-error));
+}
+.dark .variant-filled-error {
+  --tw-bg-opacity: 1;
+  background-color: rgb(var(--color-error-500) / var(--tw-bg-opacity));
+  color: rgb(var(--on-error));
+}
 .variant-filled-surface {
   background-color: rgb(var(--color-surface-400));
 }
@@ -1997,6 +2065,9 @@ input[type='file']:not(.file-dropzone-input)::file-selector-button {
 .visible {
   visibility: visible;
 }
+.invisible {
+  visibility: hidden;
+}
 .fixed {
   position: fixed;
 }
@@ -2005,6 +2076,12 @@ input[type='file']:not(.file-dropzone-input)::file-selector-button {
 }
 .relative {
   position: relative;
+}
+.-right-2 {
+  right: -0.5rem;
+}
+.-top-2 {
+  top: -0.5rem;
 }
 .bottom-0 {
   bottom: 0px;
@@ -2057,6 +2134,9 @@ input[type='file']:not(.file-dropzone-input)::file-selector-button {
 }
 .ml-9 {
   margin-left: 2.25rem;
+}
+.ml-auto {
+  margin-left: auto;
 }
 .mr-2 {
   margin-right: 0.5rem;
@@ -2121,6 +2201,10 @@ input[type='file']:not(.file-dropzone-input)::file-selector-button {
 .h-auto {
   height: auto;
 }
+.h-fit {
+  height: -moz-fit-content;
+  height: fit-content;
+}
 .h-full {
   height: 100%;
 }
@@ -2172,6 +2256,10 @@ input[type='file']:not(.file-dropzone-input)::file-selector-button {
 .w-auto {
   width: auto;
 }
+.w-fit {
+  width: -moz-fit-content;
+  width: fit-content;
+}
 .w-full {
   width: 100%;
 }
@@ -2189,6 +2277,9 @@ input[type='file']:not(.file-dropzone-input)::file-selector-button {
 }
 .flex-none {
   flex: none;
+}
+.flex-shrink-0 {
+  flex-shrink: 0;
 }
 .origin-\[50\%_50\%\] {
   transform-origin: 50% 50%;
@@ -2239,8 +2330,14 @@ input[type='file']:not(.file-dropzone-input)::file-selector-button {
 .list-none {
   list-style-type: none;
 }
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
 .grid-cols-3 {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.grid-cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 .grid-cols-\[auto_1fr_auto\] {
   grid-template-columns: auto 1fr auto;
@@ -2293,8 +2390,14 @@ input[type='file']:not(.file-dropzone-input)::file-selector-button {
 .gap-2 {
   gap: 0.5rem;
 }
+.gap-3 {
+  gap: 0.75rem;
+}
 .gap-4 {
   gap: 1rem;
+}
+.gap-5 {
+  gap: 1.25rem;
 }
 .space-x-1 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
@@ -2333,6 +2436,9 @@ input[type='file']:not(.file-dropzone-input)::file-selector-button {
 }
 .place-self-center {
   place-self: center;
+}
+.overflow-auto {
+  overflow: auto;
 }
 .overflow-hidden {
   overflow: hidden;
@@ -2375,6 +2481,12 @@ input[type='file']:not(.file-dropzone-input)::file-selector-button {
 }
 .border-2 {
   border-width: 2px;
+}
+.\!border-t-2 {
+  border-top-width: 2px !important;
+}
+.\!border-t-4 {
+  border-top-width: 4px !important;
 }
 .border-b {
   border-bottom-width: 1px;
@@ -2477,6 +2589,10 @@ input[type='file']:not(.file-dropzone-input)::file-selector-button {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
 .py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
@@ -2504,6 +2620,10 @@ input[type='file']:not(.file-dropzone-input)::file-selector-button {
   font-size: 1.875rem;
   line-height: 2.25rem;
 }
+.text-7xl {
+  font-size: 4.5rem;
+  line-height: 1;
+}
 .text-base {
   font-size: 1rem;
   line-height: 1.5rem;
@@ -2511,6 +2631,10 @@ input[type='file']:not(.file-dropzone-input)::file-selector-button {
 .text-sm {
   font-size: 0.875rem;
   line-height: 1.25rem;
+}
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 .text-xs {
   font-size: 0.75rem;
@@ -2528,6 +2652,18 @@ input[type='file']:not(.file-dropzone-input)::file-selector-button {
 .\!text-white {
   --tw-text-opacity: 1 !important;
   color: rgb(255 255 255 / var(--tw-text-opacity)) !important;
+}
+.text-error-500 {
+  --tw-text-opacity: 1;
+  color: rgb(var(--color-error-500) / var(--tw-text-opacity));
+}
+.text-primary-500 {
+  --tw-text-opacity: 1;
+  color: rgb(var(--color-primary-500) / var(--tw-text-opacity));
+}
+.text-success-500 {
+  --tw-text-opacity: 1;
+  color: rgb(var(--color-success-500) / var(--tw-text-opacity));
 }
 .text-surface-50 {
   --tw-text-opacity: 1;
@@ -2555,6 +2691,9 @@ input[type='file']:not(.file-dropzone-input)::file-selector-button {
 }
 .opacity-75 {
   opacity: 0.75;
+}
+.opacity-80 {
+  opacity: 0.8;
 }
 .shadow {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
@@ -3592,6 +3731,12 @@ input[type='file']:not(.file-dropzone-input)::file-selector-button {
 .disabled\:\!opacity-0:disabled {
   opacity: 0 !important;
 }
+.group\/color:hover .group-hover\/color\:visible {
+  visibility: visible;
+}
+.group\/title:hover .group-hover\/title\:visible {
+  visibility: visible;
+}
 .dark .dark\:bg-surface-300 {
   --tw-bg-opacity: 1;
   background-color: rgb(var(--color-surface-300) / var(--tw-bg-opacity));
@@ -3628,6 +3773,9 @@ input[type='file']:not(.file-dropzone-input)::file-selector-button {
   .md\:w-auto {
     width: auto;
   }
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .md\:flex-row {
     flex-direction: row;
   }
@@ -3640,6 +3788,16 @@ input[type='file']:not(.file-dropzone-input)::file-selector-button {
     --tw-space-y-reverse: 0;
     margin-top: calc(0px * calc(1 - var(--tw-space-y-reverse)));
     margin-bottom: calc(0px * var(--tw-space-y-reverse));
+  }
+}
+@media (min-width: 1024px) {
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1280px) {
+  .xl\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 /* Global Styles */
