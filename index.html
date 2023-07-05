@@ -2,22 +2,21 @@
 <html lang="en" class="dark">
 	<head>
 		<meta charset="utf-8" />
-		<link rel="icon" href="./nicefy/favicon.png" />
+		<link rel="icon" href="./favicon.png" />
 		<meta name="viewport" content="width=device-width" />
 		<meta http-equiv="content-security-policy" content="">
-		<link href="./nicefy/_app/immutable/assets/_layout.45086b93.css" rel="stylesheet">
-		<link href="./nicefy/_app/immutable/assets/ProgressBar.05e4960c.css" rel="stylesheet">
-		<link rel="modulepreload" href="./nicefy/_app/immutable/entry/start.bf1cf56a.js">
-		<link rel="modulepreload" href="./nicefy/_app/immutable/chunks/index.0d6ff4e4.js">
-		<link rel="modulepreload" href="./nicefy/_app/immutable/chunks/singletons.b989df8c.js">
-		<link rel="modulepreload" href="./nicefy/_app/immutable/chunks/index.52139c97.js">
-		<link rel="modulepreload" href="./nicefy/_app/immutable/entry/app.1bbe4802.js">
-		<link rel="modulepreload" href="./nicefy/_app/immutable/entry/_layout.svelte.7c09096c.js">
-		<link rel="modulepreload" href="./nicefy/_app/immutable/chunks/ProgressBar.svelte_svelte_type_style_lang.7a6fc9c5.js">
-		<link rel="modulepreload" href="./nicefy/_app/immutable/chunks/stores.2d9c07ce.js">
-		<link rel="modulepreload" href="./nicefy/_app/immutable/entry/_layout.ts.984db11e.js">
-		<link rel="modulepreload" href="./nicefy/_app/immutable/chunks/_layout.da46b06b.js">
-		<link rel="modulepreload" href="./nicefy/_app/immutable/entry/_page.svelte.2eeae527.js">
+		<link href="./_app/immutable/assets/_layout.cdd94216.css" rel="stylesheet">
+		<link href="./_app/immutable/assets/ProgressBar.05e4960c.css" rel="stylesheet">
+		<link rel="modulepreload" href="./_app/immutable/entry/start.a3d745cf.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/index.0d6ff4e4.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/singletons.d6a6b1e4.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/index.52139c97.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/app.096682c3.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/_layout.svelte.d8d0b723.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/ProgressBar.svelte_svelte_type_style_lang.7a6fc9c5.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/_layout.ts.984db11e.js">
+		<link rel="modulepreload" href="./_app/immutable/chunks/_layout.da46b06b.js">
+		<link rel="modulepreload" href="./_app/immutable/entry/_page.svelte.2eeae527.js">
 	</head>
 	<body data-theme="skeleton">
 		<div style="display: contents" class="h-full overflow-hidden">
@@ -32,7 +31,8 @@
 		<div class="app-bar-slot-lead flex-none flex justify-between items-center "><button class="btn-icon"><iconify-icon icon="charm:menu-hamburger"></iconify-icon></button>
 			</div>
 		
-		<div class="app-bar-slot-default flex-auto place-self-center"><a href="/nicefy">Nicefy</a></div>
+		<div class="app-bar-slot-default flex-auto place-self-center">Nicefy
+			</div>
 		
 		<div class="app-bar-slot-trail flex-none flex items-center space-x-4 place-content-end">
 				
@@ -72,26 +72,25 @@
 		</div>
 
 	
-	</div>
+	</div>slot /&gt;
 
 
 			
 			<script>
 				{
-					__sveltekit_125c1fc = {
+					__sveltekit_15qqccx = {
 						env: {},
-						assets: "/nicefy",
-						base: new URL("./nicefy", location).pathname,
+						base: new URL(".", location).pathname.slice(0, -1),
 						element: document.currentScript.parentElement
 					};
 
 					const data = [null,null];
 
 					Promise.all([
-						import("./nicefy/_app/immutable/entry/start.bf1cf56a.js"),
-						import("./nicefy/_app/immutable/entry/app.1bbe4802.js")
+						import("./_app/immutable/entry/start.a3d745cf.js"),
+						import("./_app/immutable/entry/app.096682c3.js")
 					]).then(([kit, app]) => {
-						kit.start(app, __sveltekit_125c1fc.element, {
+						kit.start(app, __sveltekit_15qqccx.element, {
 							node_ids: [0, 2],
 							data,
 							form: null,
