@@ -82,7 +82,11 @@
 			<h6>Selected: {config.palette.title}</h6>
 			<ul class="list h-64">
 				<VirtualScroll
-					data={query ? palettes.filter((p) => p.title.includes(query)) : palettes}
+					data={query
+						? palettes.filter((p) =>
+								p.title.toLowerCase().trim().includes(query.toLowerCase().trim())
+						  )
+						: palettes}
 					key="id"
 					let:data
 				>
