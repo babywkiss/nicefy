@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+	.button {
+		@apply disabled:contrast-50 disabled:cursor-not-allowed cursor-pointer select-none transition-all bg-foam text-basec px-5 py-3 font-bold rounded-lg enabled:hover:bg-gradient-to-t enabled:hover:from-black/20 enabled:hover:to-black/20 enabled:active:scale-90;
+	}
+	.link {
+		@apply px-3 py-1 hover:bg-highlightmed rounded-lg cursor-pointer;
+	}
+	.checkbox {
+		@apply appearance-none
+    transition-all checked:bg-foam bg-highlightlow border border-highlightmed h-5 aspect-square rounded-lg
+    checked:border-foam
+    cursor-pointer;
+	}
+	.range {
+		@apply appearance-none 
+    transition-all
+    cursor-pointer
+    bg-highlightlow rounded-lg h-5
+    focus:border-foam
+    active:border-foam
+    border border-highlightmed 
+    [&::-webkit-slider-thumb]:appearance-none
+    [&::-webkit-slider-thumb]:bg-foam
+    [&::-webkit-slider-thumb]:h-4
+    [&::-webkit-slider-thumb]:rounded-lg
+    [&::-webkit-slider-thumb]:aspect-square;
+	}
+	.input {
+		@apply focus:border-foam bg-highlightlow border border-highlightmed focus:outline-none rounded-lg px-2 py-1 text-text caret-foam;
+	}
+}
+
+@layer base {
+	input[type='number']::-webkit-outer-spin-button,
+	input[type='number']::-webkit-inner-spin-button,
+	input[type='number'] {
+		appearance: none;
+		-webkit-appearance: none;
+		margin: 0;
+		-moz-appearance: textfield !important;
+	}
+}
+
+body {
+	padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+		env(safe-area-inset-left);
+}
+
+html,
+body {
+	@apply h-screen bg-basec text-text selection:bg-pine selection:text-text overflow-hidden;
+}
+
+* {
+	-webkit-tap-highlight-color: transparent;
+	-webkit-touch-callout: none;
+}
+
+img,
+a {
+	-webkit-user-drag: none;
+}

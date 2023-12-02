@@ -1,12 +1,10 @@
 <script lang="ts">
-	import '../theme.postcss';
-	import '@skeletonlabs/skeleton/styles/all.css';
-	import '../app.postcss';
+	import '@fontsource-variable/fira-code';
+	import '../app.css';
 	import 'iconify-icon';
 	import { onMount } from 'svelte';
 	import { getResUrl, read_image } from '$lib/utils/io';
 	import { config, originalUrl, processedUrl } from './store';
-	import { AppShell, AppBar, Drawer, drawerStore } from '@skeletonlabs/skeleton';
 	import Config from '$lib/Config.svelte';
 	import ProcWorker from './processing.worker?worker';
 
@@ -31,56 +29,49 @@
 	};
 </script>
 
-<Drawer width="w-3/4 md:w-1/4">
-	<AppBar>
-		<svelte:fragment slot="lead">
-			<iconify-icon icon="material-symbols:settings" />
-		</svelte:fragment>
-		Settings
-		<svelte:fragment slot="trail">
-			<button class="btn-icon" on:click={drawerStore.close}>
-				<iconify-icon icon="material-symbols:close" />
-			</button>
-		</svelte:fragment>
-	</AppBar>
-
-	<Config bind:config={$config} />
-</Drawer>
-<AppShell ...>
-	<svelte:fragment slot="header">
-		<AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end">
-			<svelte:fragment slot="lead">
-				<button class="btn-icon" on:click={() => drawerStore.open()}>
-					<iconify-icon icon="charm:menu-hamburger" />
-				</button>
-			</svelte:fragment>
-			Nicefy
-			<svelte:fragment slot="trail">
-				{#if lastTookMS}
-					<span class="hidden md:block">Took {(lastTookMS / 1000).toFixed(2)} sec.</span>
+<div class="h-full w-full bg-surface flex select-none overflow-hidden">
+	<div class="bg-basec w-80 p-5 flex flex-col gap-5">
+		<div class="flex w-full items-center justify-between">
+			<div class="text-xl font-bold">✨ Nicefy</div>
+			<div class="flex items-center gap-1">
+				{#if $originalUrl}
+					<button on:click={() => (($originalUrl = ''), ($processedUrl = ''), (lastTookMS = 0))}>
+						<iconify-icon class="text-2xl flex text-gold" icon="majesticons:reload-circle" />
+					</button>
 				{/if}
 				{#if $processedUrl}
-					<a class="btn variant-filled-primary" href={$processedUrl} download="niced.png">
-						<iconify-icon icon="ic:baseline-download" />
+					<a href={$processedUrl} download={'niced.png'}>
+						<iconify-icon
+							class="text-3xl flex rotate-180 text-text"
+							icon="majesticons:arrow-down-circle"
+						/>
 					</a>
 				{/if}
 				{#if $originalUrl}
-					<button class="btn variant-filled-success" on:click={process} class:disabled={loading}>
-						{#if !loading}
-							<iconify-icon icon="material-symbols:play-arrow-rounded" />
-						{:else}
-							<iconify-icon icon="line-md:loading-loop" />
-						{/if}
-					</button>
-					<button
-						class="btn variant-filled-warning"
-						on:click={() => (($originalUrl = ''), ($processedUrl = ''), (lastTookMS = 0))}
-					>
-						<iconify-icon icon="ion:reload-circle" />
+					<button on:click={process} disabled={loading}>
+						<iconify-icon
+							class:text-foam={!loading}
+							class="text-2xl flex transition-all"
+							class:text-gold={loading}
+							class:animate-spin={loading}
+							icon={loading ? 'majesticons:repeat-circle' : 'majesticons:play-circle'}
+						/>
 					</button>
 				{/if}
-			</svelte:fragment>
-		</AppBar>
-	</svelte:fragment>
+			</div>
+		</div>
+		<Config bind:config={$config} />
+	</div>
 	<slot />
-</AppShell>slot />
+</div>
+<!-- {#if lastTookMS} -->
+<!-- 	<span class="hidden md:block">Took {(lastTookMS / 1000).toFixed(2)} sec.</span> -->
+<!-- {/if} -->
+<!-- 	<button -->
+<!-- 		class="btn variant-filled-warning" -->
+<!-- 		on:click={} -->
+<!-- 	> -->
+<!-- 		<iconify-icon icon="ion:reload-circle" /> -->
+<!-- 	</button> -->
+<!-- {/if} -->
+<!-- <slot /> -->
