@@ -7,6 +7,7 @@
 	import { config, originalUrl, processedUrl } from './store';
 	import Config from '$lib/Config.svelte';
 	import ProcWorker from './processing.worker?worker';
+	import themeStore from '$lib/stores/theme';
 
 	let procWorker: Worker;
 	let lastTookMS: number;
@@ -29,10 +30,13 @@
 	};
 </script>
 
-<div class="h-full w-full bg-surface flex select-none overflow-hidden">
+<div class="h-full w-full bg-surface flex select-none overflow-hidden transition-all">
 	<div class="bg-basec w-80 p-5 flex flex-col gap-5">
 		<div class="flex w-full items-center justify-between">
-			<div class="text-xl font-bold">✨ Nicefy</div>
+			<button
+				on:click={() => ($themeStore = $themeStore === 'dark' ? 'light' : 'dark')}
+				class="text-xl font-bold">✨ Nicefy</button
+			>
 			<div class="flex items-center gap-1">
 				{#if $originalUrl}
 					<button on:click={() => (($originalUrl = ''), ($processedUrl = ''), (lastTookMS = 0))}>
