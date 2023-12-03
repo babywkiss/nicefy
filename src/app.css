@@ -9,6 +9,12 @@
 	.link {
 		@apply px-3 py-1 hover:bg-highlightmed rounded-lg cursor-pointer;
 	}
+	.chip {
+		@apply transition-all rounded-lg bg-highlightmed hover:bg-highlightlow px-3 py-1 text-xs;
+	}
+	.chip-active {
+		@apply bg-foam hover:bg-foam/80 text-basec;
+	}
 	.checkbox {
 		@apply appearance-none
     transition-all checked:bg-foam bg-highlightlow border border-highlightmed h-5 aspect-square rounded-lg
@@ -17,6 +23,7 @@
 	}
 	.range {
 		@apply appearance-none 
+    hover:bg-basec
     transition-all
     cursor-pointer
     bg-highlightlow rounded-lg h-5
@@ -30,7 +37,7 @@
     [&::-webkit-slider-thumb]:aspect-square;
 	}
 	.input {
-		@apply focus:border-foam bg-highlightlow border border-highlightmed focus:outline-none rounded-lg px-2 py-1 text-text caret-foam;
+		@apply hover:bg-basec focus:border-foam bg-highlightlow border border-highlightmed focus:outline-none rounded-lg px-2 py-1 text-text caret-foam;
 	}
 }
 

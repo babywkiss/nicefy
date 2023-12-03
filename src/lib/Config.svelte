@@ -8,6 +8,22 @@
 	export let config: Config;
 
 	let query = '';
+	const colorQuantityOptions = ['2', '3', '4', '5', '5+', 'All'] as const;
+	let colorQuantityOption: (typeof colorQuantityOptions)[number] = 'All';
+
+	$: filtered =
+		query || colorQuantityOption !== 'All'
+			? palettes.filter((p) => {
+					const titleMatch = p.title.toLowerCase().trim().includes(query.toLowerCase().trim());
+					const quantityMatch =
+						colorQuantityOption === 'All'
+							? true
+							: colorQuantityOption === '5+'
+							  ? p.colors.length >= 5
+							  : p.colors.length === Number(colorQuantityOption);
+					return titleMatch && quantityMatch;
+			  })
+			: palettes;
 </script>
 
 <div class="flex flex-col gap-3 h-full overflow-auto">
@@ -67,40 +83,31 @@
 		<div class="flex flex-wrap gap-2 items-center">
 			<button
 				on:click={() => (config.rescaleBack = !config.rescaleBack)}
-				class={twMerge(
-					'transition-all rounded-lg bg-highlightmed hover:bg-highlightlow px-3 py-1 text-xs',
-					config.rescaleBack && 'bg-foam hover:bg-foam/80 text-basec'
-				)}>Rescale Back</button
+				class={twMerge('chip', config.rescaleBack && 'chip-active')}>Rescale Back</button
 			>
 			<button
 				on:click={() => (config.toDither = !config.toDither)}
-				class={twMerge(
-					'transition-all rounded-lg bg-highlightmed hover:bg-highlightlow px-3 py-1 text-xs',
-					config.toDither && 'bg-foam hover:bg-foam/80 text-basec'
-				)}>Apply Dithering</button
+				class={twMerge('chip', config.toDither && 'chip-active')}>Apply Dithering</button
 			>
 			<button
 				on:click={() => (config.labComparison = !config.labComparison)}
-				class={twMerge(
-					'transition-all rounded-lg bg-highlightmed hover:bg-highlightlow px-3 py-1 text-xs',
-					config.labComparison && 'bg-foam hover:bg-foam/80 text-basec'
-				)}>Lab Comparison</button
+				class={twMerge('chip', config.labComparison && 'chip-active')}>Lab Comparison</button
 			>
 		</div>
 	</div>
 	<div class="flex flex-col overflow-auto gap-2">
 		<span class="font-bold">Palette</span>
 		<input class="input" placeholder="🔎 Search by title" type="search" bind:value={query} />
+		<div class="flex gap-1">
+			{#each colorQuantityOptions as option}
+				<button
+					on:click={() => (colorQuantityOption = option)}
+					class={twMerge('chip', option === colorQuantityOption && 'chip-active')}>{option}</button
+				>
+			{/each}
+		</div>
 		<ul class="flex flex-col overflow-auto rounded-lg">
-			<VirtualScroll
-				data={query
-					? palettes.filter((p) =>
-							p.title.toLowerCase().trim().includes(query.toLowerCase().trim())
-					  )
-					: palettes}
-				key="id"
-				let:data
-			>
+			<VirtualScroll data={filtered} key="id" let:data>
 				<button
 					class={twMerge(
 						'border border-highlightlow transition-all flex flex-col w-full bg-highlightlow rounded-lg pt-3 gap-1 mb-3 hover:bg-highlightmed',

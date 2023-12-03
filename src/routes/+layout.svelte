@@ -8,6 +8,7 @@
 	import Config from '$lib/Config.svelte';
 	import ProcWorker from './processing.worker?worker';
 	import themeStore from '$lib/stores/theme';
+	import { scale } from 'svelte/transition';
 
 	let procWorker: Worker;
 	let lastTookMS: number;
@@ -39,12 +40,21 @@
 			>
 			<div class="flex items-center gap-1">
 				{#if $originalUrl}
-					<button on:click={() => (($originalUrl = ''), ($processedUrl = ''), (lastTookMS = 0))}>
+					<button
+						class="hover:scale-125 transition-all"
+						transition:scale
+						on:click={() => (($originalUrl = ''), ($processedUrl = ''), (lastTookMS = 0))}
+					>
 						<iconify-icon class="text-2xl flex text-gold" icon="majesticons:reload-circle" />
 					</button>
 				{/if}
 				{#if $processedUrl}
-					<a href={$processedUrl} download={'niced.png'}>
+					<a
+						class="hover:scale-125 transition-all"
+						transition:scale
+						href={$processedUrl}
+						download={'niced.png'}
+					>
 						<iconify-icon
 							class="text-3xl flex rotate-180 text-text"
 							icon="majesticons:arrow-down-circle"
@@ -52,7 +62,12 @@
 					</a>
 				{/if}
 				{#if $originalUrl}
-					<button on:click={process} disabled={loading}>
+					<button
+						class="hover:scale-125 transition-all"
+						transition:scale
+						on:click={process}
+						disabled={loading}
+					>
 						<iconify-icon
 							class:text-foam={!loading}
 							class="text-2xl flex transition-all"
