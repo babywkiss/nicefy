@@ -30,11 +30,14 @@
     focus:border-foam
     active:border-foam
     border border-highlightmed 
+    overflow-hidden
     [&::-webkit-slider-thumb]:appearance-none
     [&::-webkit-slider-thumb]:bg-foam
     [&::-webkit-slider-thumb]:h-4
     [&::-webkit-slider-thumb]:rounded-lg
-    [&::-webkit-slider-thumb]:aspect-square;
+    [&::-webkit-slider-thumb]:aspect-square
+    [&::-webkit-slider-thumb]:shadow-highlighthigh
+    [&::-webkit-slider-thumb]:shadow-[-600px_0_0_593px];
 	}
 	.input {
 		@apply hover:bg-basec focus:border-foam bg-highlightlow border border-highlightmed focus:outline-none rounded-lg px-2 py-1 text-text caret-foam;

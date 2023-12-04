@@ -2,7 +2,7 @@
 	// import Imageslider from '$lib/ImageSlider.svelte';
 	import { twMerge } from 'tailwind-merge';
 	import { originalUrl, processedUrl } from './store';
-	import { slide } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 
 	let files: FileList;
 
@@ -43,7 +43,7 @@
 	{#if $originalUrl}
 		<div
 			style="grid-area: 1 / 1;"
-			transition:slide
+			transition:fly={{ y: '100%', opacity: 1 }}
 			class="w-full h-full flex justify-center items-center"
 		>
 			<img class="object-contain h-full" src={$processedUrl || $originalUrl} alt="" />
@@ -51,7 +51,7 @@
 	{:else}
 		<div
 			style="grid-area: 1 / 1;"
-			transition:slide
+			transition:fly={{ y: '-100%', opacity: 1 }}
 			class="w-full h-full flex justify-center items-center"
 		>
 			<label style="grid-area: 1 / 1">
