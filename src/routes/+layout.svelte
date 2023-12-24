@@ -26,8 +26,8 @@
 
 	const process = async () => {
 		loading = true;
-		let { data, info } = read_image($originalUrl);
-		procWorker.postMessage({ data, info, config: $config });
+		let image = read_image($originalUrl);
+		procWorker.postMessage({ image, config: $config });
 	};
 </script>
 

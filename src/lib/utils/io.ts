@@ -1,5 +1,5 @@
-import { colorize, dither, scale } from './filters';
-import { bayerMatrix } from './helpers';
+import { colorize, dither, scale } from "./filters";
+import { bayerMatrix } from "./helpers";
 
 export type ImageInfo = {
 	width: number;
@@ -8,7 +8,7 @@ export type ImageInfo = {
 };
 
 export type Config = {
-	pixelSize: number;
+	newHeight: number;
 	palette: { id: number; title: string; colors: number[][] };
 	toDither: boolean;
 	bayerLevel: number;
@@ -22,35 +22,38 @@ export const read_image = (url: string) => {
 	image.src = url;
 	const width = image.width;
 	const height = image.height;
-	const canvas = document.createElement('canvas');
+	const canvas = document.createElement("canvas");
 	canvas.width = width;
 	canvas.height = height;
-	const ctx = canvas.getContext('2d');
+	const ctx = canvas.getContext("2d");
 	ctx?.drawImage(image, 0, 0);
-	const data = ctx?.getImageData(0, 0, width, height).data;
-	return { data, info: { width, height, channels: 4 } };
+	const data = ctx?.getImageData(0, 0, width, height);
+	return data;
 };
 
-export const process_image = (data: Uint8ClampedArray, info: ImageInfo, config: Config) => {
-	const { pixelSize, palette, toDither, bayerLevel, noiseLevel, labComparison, rescaleBack } =
-		config;
-	if (pixelSize > 1) {
-		({ data, info } = scale(data, info, 1 / pixelSize));
-	}
+export const process_image = (
+	image: ImageData,
+	{
+		newHeight,
+		palette,
+		toDither,
+		bayerLevel,
+		noiseLevel,
+		labComparison,
+	}: Config,
+) => {
+	const height = image.height;
+	const processed = scale(image, newHeight);
 	if (toDither) {
-		dither(data, info, bayerMatrix(bayerLevel), noiseLevel);
+		dither(processed, bayerMatrix(bayerLevel), noiseLevel);
 	}
-	colorize(data, info, palette.colors, labComparison);
-	if (pixelSize > 1 && rescaleBack) {
-		({ data, info } = scale(data, info, pixelSize));
-	}
-	const imageData = new ImageData(data, info.width, info.height);
-	return imageData;
+	colorize(processed, palette.colors, labComparison);
+	return scale(processed, height);
 };
 
 export const getResUrl = (imageData: ImageData) => {
-	const canvas = document.createElement('canvas');
-	const ctx = canvas.getContext('2d');
+	const canvas = document.createElement("canvas");
+	const ctx = canvas.getContext("2d");
 	canvas.width = imageData.width;
 	canvas.height = imageData.height;
 	ctx?.putImageData(imageData, 0, 0);

@@ -3,6 +3,7 @@
 	import { twMerge } from 'tailwind-merge';
 	import { originalUrl, processedUrl } from './store';
 	import { fly } from 'svelte/transition';
+	import { config, maxHeight } from './store';
 
 	let files: FileList;
 
@@ -12,6 +13,9 @@
 		reader.onloadend = () => {
 			if (!(typeof reader.result === 'string')) return;
 			$originalUrl = reader.result;
+			const temp = new Image();
+			temp.onload = () => ($maxHeight = temp.height);
+			temp.src = reader.result;
 		};
 	};
 

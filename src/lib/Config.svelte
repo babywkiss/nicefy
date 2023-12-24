@@ -4,6 +4,7 @@
 	import type { Config } from '$lib/utils/io';
 	import palettes from '$lib/utils/palettes';
 	import { rgbToHex } from '$lib/utils/helpers';
+	import { maxHeight } from '../routes/store';
 
 	export let config: Config;
 
@@ -28,19 +29,19 @@
 
 <div class="flex flex-col gap-3 h-full overflow-auto">
 	<div class="flex flex-col gap-2">
-		<span class="font-bold">Scalling</span>
+		<span class="font-bold">Height</span>
 		<div class="flex items-center gap-2 w-full">
 			<input
 				class="w-full range"
 				type="range"
-				bind:value={config.pixelSize}
-				min={1}
-				max={16}
+				bind:value={config.newHeight}
+				min={4}
+				max={$maxHeight}
 				step={1}
 			/>
 			<span
 				class="font-bold w-12 flex justify-center items-center shrink-0 bg-highlightmed rounded-lg px-2 py-1 text-xs"
-				>1/{config.pixelSize}</span
+				>{config.newHeight} px</span
 			>
 		</div>
 	</div>
@@ -82,12 +83,8 @@
 		<span class="font-bold">Options</span>
 		<div class="flex flex-wrap gap-2 items-center">
 			<button
-				on:click={() => (config.rescaleBack = !config.rescaleBack)}
-				class={twMerge('chip', config.rescaleBack && 'chip-active')}>Rescale Back</button
-			>
-			<button
 				on:click={() => (config.toDither = !config.toDither)}
-				class={twMerge('chip', config.toDither && 'chip-active')}>Apply Dithering</button
+				class={twMerge('chip', config.toDither && 'chip-active')}>Dithering</button
 			>
 			<button
 				on:click={() => (config.labComparison = !config.labComparison)}
