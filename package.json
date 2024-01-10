@@ -13,18 +13,23 @@
     "format": "prettier --write ."
   },
   "devDependencies": {
-    "@sveltejs/adapter-auto": "^2.0.0",
-    "@sveltejs/adapter-static": "^2.0.3",
-    "@sveltejs/kit": "^1.27.4",
+    "@melt-ui/pp": "^0.2.0",
+    "@melt-ui/svelte": "^0.66.2",
+    "@sveltejs/adapter-auto": "^3.0.1",
+    "@sveltejs/adapter-static": "^3.0.1",
+    "@sveltejs/kit": "^2.0.6",
+    "@sveltejs/vite-plugin-svelte": "^3.0.0",
+    "@types/delta-e": "^0.0.2",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "autoprefixer": "^10.4.7",
-    "eslint": "^8.28.0",
+    "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-svelte": "^2.30.0",
+    "eslint-plugin-svelte": "^2.35.0",
     "postcss": "^8.4.31",
-    "prettier": "^3.0.0",
-    "prettier-plugin-svelte": "^3.0.0",
+    "postcss-load-config": "^5.0.2",
+    "prettier": "^3.1.1",
+    "prettier-plugin-svelte": "^3.1.2",
     "svelte": "^4.2.7",
     "svelte-check": "^3.6.0",
     "svelte-virtual-scroll-list": "^1.1.0",
@@ -32,12 +37,12 @@
     "tslib": "^2.4.1",
     "tw-colors": "^3.3.1",
     "typescript": "^5.0.0",
-    "vite": "^4.0.0"
+    "vite": "^5.0.10"
   },
   "type": "module",
   "dependencies": {
     "@fontsource-variable/fira-code": "^5.0.15",
-    "color-delta-e": "^1.1.2",
+    "delta-e": "^0.0.8",
     "iconify-icon": "^1.0.8",
     "tailwind-merge": "^2.1.0"
   }
