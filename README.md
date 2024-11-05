@@ -2,7 +2,7 @@
 
 ## Image adjustment to fit palette.
 
-> Try it on [Github Pages](https://nicejji.github.io/nicefy/)
+> Try it on [Github Pages](https://babywkiss.github.io/nicefy/)
 
 <img width="1211" alt="image" src="https://user-images.githubusercontent.com/89997671/224581546-7419dc4f-9d35-4374-ba05-925a71cbac59.png">
 
