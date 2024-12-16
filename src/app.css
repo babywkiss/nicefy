@@ -1,0 +1,28 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+html,
+body {
+	@apply bg-base-300 h-full w-full overflow-hidden;
+}
+
+.input {
+	@apply focus-within:outline-none focus:outline-none transition-[border-color] focus:border-base-content/35 focus-within:border-base-content/35;
+}
+
+.btn {
+	@apply focus:outline-none;
+}
+
+@layer utilities {
+	/* Hide scrollbar for Chrome, Safari and Opera */
+	.no-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+	/* Hide scrollbar for IE, Edge and Firefox */
+	.no-scrollbar {
+		-ms-overflow-style: none; /* IE and Edge */
+		scrollbar-width: none; /* Firefox */
+	}
+}
